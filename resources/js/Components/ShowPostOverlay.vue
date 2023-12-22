@@ -40,20 +40,30 @@ const textareaInput = (e) => {
     >
       <div class="w-full md:flex h-full overflow-auto rounded-xl">
         <div class="flex items-center bg-black w-full">
-          <img class="rounded-xl min-w-[400px] p-4 mx-auto" src="/19.jpg" />
+          <img class="rounded-xl min-w-[400px] p-4 mx-auto" :src="post.file" />
         </div>
 
         <div class="md:max-w-[500px] w-full relative">
           <div class="flex items-center justify-between p-3 border-b">
             <div class="flex items-center">
-              <img class="rounded-full w-[38px] h-[38px]" src="/19.jpg" />
-              <div class="ml-4 font-extrabold text-[15px]">Baby Doe</div>
+              <img
+                class="rounded-full w-[38px] h-[38px]"
+                :src="post.user.file"
+              />
+              <div class="ml-4 font-extrabold text-[15px]">
+                {{ post.user.name }}
+              </div>
               <div class="flex items-center text-[15px] text-gray-500">
                 <span class="-mt-5 ml-2 mr-[5px] text-[35px]">.</span>
-                <div>21 Dec 2023</div>
+                <div>{{ post.created_at }}</div>
               </div>
             </div>
-            <button>
+            <button
+              @click="
+                deleteType = 'Post';
+                id = post.id;
+              "
+            >
               <DotsHorizontal class="cursor-pointer" :size="27" />
             </button>
           </div>
@@ -63,39 +73,63 @@ const textareaInput = (e) => {
               <div class="flex items-center relative">
                 <img
                   class="absolute -top-1 rounded-full w-[38px] h-[38px]"
-                  src="/19.jpg"
+                  :src="post.user.file"
                 />
                 <div class="ml-14">
                   <span class="font-extrabold text-[15px] mr-2">
-                    Baby Doe
+                    {{ post.user.name }}
                   </span>
-                  <span class="text-[15px] text-gray-900"> Text </span>
+                  <span class="text-[15px] text-gray-900">
+                    {{ post.text }}
+                  </span>
                 </div>
               </div>
             </div>
 
-            <div class="p-3" v-for="comment in 2" :key="comment">
+            <div
+              v-if="post.comments"
+              class="p-3"
+              v-for="comment in post.comments"
+              :key="comment"
+            >
               <div class="flex items-center justify-between">
                 <div class="flex items-center">
-                  <img class="rounded-full w-[38px] h-[38px]" src="/25.jpg" />
+                  <img
+                    class="rounded-full w-[38px] h-[38px]"
+                    :src="comment.user.file"
+                  />
                   <div class="ml-4 font-extrabold text-[15px]">
-                    Jenice
-                    <span class="font-light text-gray-700 text-sm">
-                      21 Dec 2023
-                    </span>
+                    {{ comment.user.name }}
+                    <span class="font-light text-gray-700 text-sm">{{
+                      post.created_at
+                    }}</span>
                   </div>
                 </div>
 
-                <DotsHorizontal :size="27" />
+                <DotsHorizontal
+                  class="cursor-pointer"
+                  @click="
+                    deleteType = 'Comment';
+                    id = comment.id;
+                  "
+                  :size="27"
+                />
               </div>
 
-              <div class="text-[13px] pl-[55px]">Comment Text</div>
+              <div class="text-[13px] pl-[55px]">
+                {{ comment.text }}
+              </div>
             </div>
 
-            <div class="pb-16"></div>
+            <div class="pb-16 md:hidden"></div>
           </div>
 
-          <LikeSection class="px-2 border-t mb-2" />
+          <LikesSection
+            v-if="post"
+            class="px-2 border-t mb-2"
+            :post="post"
+            @like="$emit('updateLike', $event)"
+          />
 
           <div
             class="absolute flex border bottom-0 w-full max-h-[200px] bg-white overflow-auto"
@@ -109,7 +143,14 @@ const textareaInput = (e) => {
               rows="1"
               class="w-full border-0 mt-2 mb-2 text-sm z-50 focus:ring-0 text-gray-600 text-[18px]"
             ></textarea>
-            <button v-if="comment" class="text-blue-600 font-extrabold pr-4">
+            <button
+              v-if="comment"
+              class="text-blue-600 font-extrabold pr-4"
+              @click="
+                $emit('addComment', { post, user, comment });
+                comment = '';
+              "
+            >
               Post
             </button>
           </div>
