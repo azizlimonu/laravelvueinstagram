@@ -38,6 +38,15 @@ const addComment = (object) => {
   );
 };
 
+const updatedPost = (object) => {
+  for (let i = 0; i < posts.value.data.length; i++) {
+    const post = posts.value.data[i];
+    if (post.id === object.post.id) {
+      currentPost.value = post;
+    }
+  }
+};
+
 const deleteFunc = (object) => {
   let url = "";
   if (object.deleteType === "Post") {
@@ -81,15 +90,6 @@ const updateLike = (object) => {
         onFinish: () => updatedPost(object),
       }
     );
-  }
-};
-
-const updatedPost = (object) => {
-  for (let i = 0; i < posts.value.data.length; i++) {
-    const post = posts.value.data[i];
-    if (post.id === object.post.id) {
-      currentPost.value = post;
-    }
   }
 };
 </script>

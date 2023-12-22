@@ -1,8 +1,8 @@
 <script setup>
 import { ref, toRefs } from "vue";
-// import { usePage } from "@inertiajs/vue3";
+import { usePage } from "@inertiajs/vue3";
 
-// import ShowPostOptionsOverlay from "@/Components/ShowPostOptionsOverlay.vue";
+import ShowPostOptionsOverlay from "@/Components/ShowPostOptionsOverlay.vue";
 import LikeSection from "@/Components/LikeSection.vue";
 
 import Close from "vue-material-design-icons/Close.vue";
@@ -12,8 +12,9 @@ import EmoticonHappyOutline from "vue-material-design-icons/EmoticonHappyOutline
 let comment = ref("");
 let deleteType = ref(null);
 let id = ref(null);
+let textarea = ref(null);
 
-// const user = usePage().props.auth.user;
+const user = usePage().props.auth.user;
 
 const props = defineProps(["post"]);
 const { post } = toRefs(props);
@@ -59,6 +60,7 @@ const textareaInput = (e) => {
               </div>
             </div>
             <button
+              v-if="user.id === post.user.id"
               @click="
                 deleteType = 'Post';
                 id = post.id;
@@ -107,6 +109,7 @@ const textareaInput = (e) => {
                 </div>
 
                 <DotsHorizontal
+                  v-if="user.id === comment.user.id"
                   class="cursor-pointer"
                   @click="
                     deleteType = 'Comment';
@@ -124,7 +127,7 @@ const textareaInput = (e) => {
             <div class="pb-16 md:hidden"></div>
           </div>
 
-          <LikesSection
+          <LikeSection
             v-if="post"
             class="px-2 border-t mb-2"
             :post="post"
@@ -142,7 +145,7 @@ const textareaInput = (e) => {
               placeholder="Add a comment..."
               rows="1"
               class="w-full border-0 mt-2 mb-2 text-sm z-50 focus:ring-0 text-gray-600 text-[18px]"
-            ></textarea>
+            />
             <button
               v-if="comment"
               class="text-blue-600 font-extrabold pr-4"
