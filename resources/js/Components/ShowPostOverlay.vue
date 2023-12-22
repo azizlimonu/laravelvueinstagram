@@ -3,7 +3,7 @@ import { ref, toRefs } from "vue";
 // import { usePage } from "@inertiajs/vue3";
 
 // import ShowPostOptionsOverlay from "@/Components/ShowPostOptionsOverlay.vue";
-// import LikesSection from "@/Components/LikesSection.vue";
+import LikeSection from "@/Components/LikeSection.vue";
 
 import Close from "vue-material-design-icons/Close.vue";
 import DotsHorizontal from "vue-material-design-icons/DotsHorizontal.vue";
@@ -92,13 +92,10 @@ const textareaInput = (e) => {
               <div class="text-[13px] pl-[55px]">Comment Text</div>
             </div>
 
-            <div class="pb-16 md:hidden"></div>
+            <div class="pb-16"></div>
           </div>
 
-          <LikesSection
-            class="px-2 border-t mb-2"
-            @like="$emit('updateLike', $event)"
-          />
+          <LikeSection class="px-2 border-t mb-2" />
 
           <div
             class="absolute flex border bottom-0 w-full max-h-[200px] bg-white overflow-auto"
