@@ -21,10 +21,6 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/user', function () {
-    return Inertia::render('User');
-});
-
 Route::middleware('auth')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('home.index');
 
