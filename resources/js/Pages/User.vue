@@ -183,11 +183,10 @@ const getUploadedImage = (e) => {
 
       <div class="grid md:gap-4 gap-1 grid-cols-3 relative">
         <div v-for="postByUser in 2" :key="postByUser">
-          <!-- <ContentOverlay
+          <ContentOverlay
             :postByUser="postByUser"
-            @selectedPost="data.post = $event"
-          /> -->
-          <p>Kontent</p>
+            @selectedPost="postByUser = $event"
+          />
         </div>
       </div>
 
